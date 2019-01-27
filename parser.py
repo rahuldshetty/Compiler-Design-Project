@@ -44,7 +44,26 @@ class Parser:
         else:
             raise Exception("Error parsing function...")
 
+    def findMain(self):
+        intToken=Parser.getNextToken(self)
+        if intToken[1] == "INTEGER":
+            mainToken=Parser.getNextToken(self)
+            if mainToken[0]=="main":
+                lpara=Parser.getNextToken(self)
+                rpara=Parser.getNextToken(self)
+                begin=Parser.getNextToken(self)
+                last=self.tokens[len(self.tokens)-1]
+                if lpara[1]=="LEFT_PARA" and rpara[1]=="RIGHT_PARA" and begin[1]=="BLOCK_START" and last[1]=="BLOCK_END":
+                    # MAIN FUNCTION EXISTS OR NOT
+                    ParseTree=[]
+                    
 
+                else:
+                    raise Exception("Main block not found...")
+            else:
+                raise Exception("Main block not found...")
+        else:
+            raise Exception("Main block not found...")
 
 
     def checkDeclarative(self):
@@ -82,9 +101,10 @@ printf_code1 = "printf(n1);"
 printf_code = "printf(\"Hello\");"
 printf_code2 = "printf(h);"
 
+main="int main() begin int a,b,c; printf(a);  end"
     
-p=Parser(printf_code2)
-print(p.checkPrintStmt())
+p=Parser(main)
+print(p.findMain())
 
 
         

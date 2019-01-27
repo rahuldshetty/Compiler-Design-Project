@@ -1,13 +1,15 @@
-S -> int main() begin STMT end
+S -> int main() begin STMT end  // Done with this
 STMT -> DECLARATION | CONDITION | FUNCTION | ASSIGNMENT
 
-ASSIGNMENT -> ID = EXPRESSION ; | datatype ID = EXPRESSION ;       // Optional
+
 
 DECLARATION -> datatype IDLIST ;   // Done with this
-IDLIST -> ID , IDLIST | ID
+IDLIST -> ID , IDLIST | ID           // Done with this
 
 FUNCTION -> printf( MSG );   // Done with this
-MSG -> "<message>" | ID
+MSG -> "<message>" | ID // Done with this
+
+
 
 CONDITION -> if ( EXPRSSION ) begin STMT end
 
@@ -17,6 +19,9 @@ TERM ->  TERM * FACTOR | TERM / FACTOR | FACTOR
 FACTOR -> ( EXPRESSION ) | - FACTOR | ID | DIGITS
 
 RELOP -> >= | <= | > | < | == | != 
+
+
+ASSIGNMENT -> ID = EXPRESSION ; | datatype ID = EXPRESSION ;       // Optional
 
 TOKEN LISTS:
 
