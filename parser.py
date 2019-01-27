@@ -20,7 +20,6 @@ class Parser:
 
 
     def checkPrintStmt(self):
-        print(self.tokens)
         grammar=['DISPLAY']
         curPos=self.currentTokenID
         token=Parser.getNextToken(self)
