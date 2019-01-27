@@ -1,6 +1,6 @@
 import re
 
-TOKENS = ["=","==","%","\*","-","\+","!=","!","\|\|","&&","<=","<",">=",">","if","main","begin","end","printf","float","char","int",r'\(',r'\)',",",";",r'\".*\"',r'\'.\'',r'[a-zA-Z][a-zA-Z0-9]*',r'[0-9]+',"'",'"']
+TOKENS = ["=","==","%","\*","-","\+","!=","!","\|\|","&&","<=","<",">=",">","if","main","begin","end","printf","float","char","int",r'\(',r'\)',",",";",r'\".*\"',r'\'.?\'',r'[a-zA-Z][a-zA-Z0-9]*',r'[0-9]+',"'",'"']
 
 DATATYPES = ["INTEGER","FLOAT","CHAR"]
 
@@ -49,7 +49,7 @@ class Tokenizer:
 			if token not in TOKEN_DESC:
 				if re.match(r'\".*\"',token):
 					Token.append((token,'STRING'))
-				elif re.match(r'\'.\'',token):
+				elif re.match(r'\'.?\'',token):
 					Token.append((token,'CHARACTER'))
 				elif re.match("'",token):
 					Token.append((token,'SINGLE_QUOTE'))

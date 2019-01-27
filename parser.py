@@ -3,9 +3,12 @@ from lexer import *
 
 
 class Parser:
-    
-    def __init__(self,code):
-        self.tokens=Tokenizer.tokenize(code)
+
+    def __init__(self,code="",tokens=[]):
+        if len(tokens)!=0:
+            self.tokens=tokens
+        else:
+            self.tokens=Tokenizer.tokenize(code)
         self.currentTokenID=0
 
         
@@ -22,19 +25,23 @@ class Parser:
     def checkPrintStmt(self):
         grammar=['DISPLAY']
         curPos=self.currentTokenID
-        token=Parser.getNextToken(self)
+        token=self.getNextToken()
         if token[1] is not "DISPLAY":
+            self.currentTokenID=curPos
             return []
-        token1=Parser.getNextToken(self)
+        token1=self.getNextToken()
         if token1[1] == "LEFT_PARA" :
-            token2=Parser.getNextToken(self)
+            token2=self.getNextToken()
             if token2[1] == "STRING" or token2[1] == "CHARACTER" or token2[1]=="IDENTIFIER":
                     grammar.append(token2)
+            elif token2[1]=="RIGHT_PARA":
+                grammar.append(("","STRING"))
+                self.currentTokenID=self.currentTokenID-1
             else:
                 raise Exception("Error parsing function...")
-            token3=Parser.getNextToken(self)
+            token3=self.getNextToken()
             if token3[1]=="RIGHT_PARA":
-                token4=Parser.getNextToken(self)
+                token4=self.getNextToken()
                 if token4[1]=="EOS":
                     return grammar
                 else:
@@ -49,7 +56,7 @@ class Parser:
         temp=[]
         stack=[]
         while self.currentTokenID < len(self.tokens)-1:
-            token=Parser.getNextToken(self)
+            token=self.getNextToken()
             if token[1]=="BLOCK_START":
                 stack.append("START")
                 temp.append(token)
@@ -72,21 +79,32 @@ class Parser:
 
 
     def findMain(self):
-        intToken=Parser.getNextToken(self)
+        intToken=self.getNextToken()
         if intToken[1] == "INTEGER":
-            mainToken=Parser.getNextToken(self)
+            mainToken=self.getNextToken()
             if mainToken[0]=="main":
-                lpara=Parser.getNextToken(self)
-                rpara=Parser.getNextToken(self)
-                begin=Parser.getNextToken(self)
+                lpara=self.getNextToken()
+                rpara=self.getNextToken()
+                begin=self.getNextToken()
                 last=self.tokens[len(self.tokens)-1]
                 if lpara[1]=="LEFT_PARA" and rpara[1]=="RIGHT_PARA" and begin[1]=="BLOCK_START" and last[1]=="BLOCK_END":
                     # MAIN FUNCTION EXISTS OR NOT
                     ParseTree=[]
-                    lines=Parser.findEachStmts(self)
-                    print("lines:")
+                    lines=self.findEachStmts()
                     for line in lines:
-                        print(line)
+                        tempParser=Parser(tokens=line)
+                        t1=tempParser.checkDeclarative()
+                        if t1!=[]:
+                            ParseTree.append(t1)
+                            continue
+                        t1=tempParser.checkPrintStmt()
+                        if t1!=[]:
+                            ParseTree.append(t1)
+                            continue
+                        else:
+                            raise Exception("Invalid Statment..")
+                    for line in ParseTree:print(line)
+                    
 
                 else:
                     raise Exception("Main block not found...")
@@ -99,17 +117,18 @@ class Parser:
     def checkDeclarative(self):
         declarations=['DECLARATION']
         curPos=self.currentTokenID
-        token=Parser.getNextToken(self)
+        token=self.getNextToken()
         if token[1] not in DATATYPES:
+            self.currentTokenID=curPos
             return []
         declarations.append(token[1])
-        token1=Parser.getNextToken(self)
+        token1=self.getNextToken()
         if token1[1]=='IDENTIFIER':
             declarations.append(token1)
             while (self.currentTokenID)<len(self.tokens):
-                token2=Parser.getNextToken(self)
+                token2=self.getNextToken()
                 if token2[1]=='SEPERATOR':
-                    token3=Parser.getNextToken(self)
+                    token3=self.getNextToken()
                     if token3[1]=='IDENTIFIER':
                         declarations.append(token3)
                         continue
@@ -131,9 +150,9 @@ printf_code1 = "printf(n1);"
 printf_code = "printf(\"Hello\");"
 printf_code2 = "printf(h);"
 
-main="int main() begin int a,b,c; printf(a);int c,d;printf(\"hello\");  end"
+main="int main() begin int a,b,c; printf('');int c,d;printf(\"hello\");  end"
     
 lines="int a,b,c;printf(a);printf('f')"
 
-p=Parser(main)
+p=Parser(code=main)
 p.findMain()
