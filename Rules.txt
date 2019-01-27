@@ -1,4 +1,5 @@
 S -> int main() begin STMT end  // Done with this
+// Done with splitting STMT into different Lines
 STMT -> DECLARATION | CONDITION | FUNCTION | ASSIGNMENT
 
 

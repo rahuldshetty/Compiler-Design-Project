@@ -44,6 +44,33 @@ class Parser:
         else:
             raise Exception("Error parsing function...")
 
+    def findEachStmts(self):
+        stmts=[]
+        temp=[]
+        stack=[]
+        while self.currentTokenID < len(self.tokens)-1:
+            token=Parser.getNextToken(self)
+            if token[1]=="BLOCK_START":
+                stack.append("START")
+                temp.append(token)
+            elif token[1]=="BLOCK_END":
+                stack.pop()
+                temp.append(token)
+                stmts.append(temp)
+                temp=[]
+
+            if token[1]=="EOS" and len(stack)==0:
+                temp.append(token)
+                stmts.append(temp)
+                temp=[]
+            else:
+                temp.append(token)
+        if len(temp)==0:
+            return stmts
+        else:
+            raise Exception("Invalid Statement Ending...")
+
+
     def findMain(self):
         intToken=Parser.getNextToken(self)
         if intToken[1] == "INTEGER":
@@ -56,7 +83,10 @@ class Parser:
                 if lpara[1]=="LEFT_PARA" and rpara[1]=="RIGHT_PARA" and begin[1]=="BLOCK_START" and last[1]=="BLOCK_END":
                     # MAIN FUNCTION EXISTS OR NOT
                     ParseTree=[]
-                    
+                    lines=Parser.findEachStmts(self)
+                    print("lines:")
+                    for line in lines:
+                        print(line)
 
                 else:
                     raise Exception("Main block not found...")
@@ -101,14 +131,9 @@ printf_code1 = "printf(n1);"
 printf_code = "printf(\"Hello\");"
 printf_code2 = "printf(h);"
 
-main="int main() begin int a,b,c; printf(a);  end"
+main="int main() begin int a,b,c; printf(a);int c,d;printf(\"hello\");  end"
     
+lines="int a,b,c;printf(a);printf('f')"
+
 p=Parser(main)
-print(p.findMain())
-
-
-        
-        
-
-    
-    
+p.findMain()
