@@ -6,7 +6,7 @@ ASSIGNMENT -> ID = EXPRESSION ; | datatype ID = EXPRESSION ;       // Optional
 DECLARATION -> datatype IDLIST ;   // Done with this
 IDLIST -> ID , IDLIST | ID
 
-FUNCTION -> printf( MSG );
+FUNCTION -> printf( MSG );   // Done with this
 MSG -> "<message>" | ID
 
 CONDITION -> if ( EXPRSSION ) begin STMT end
