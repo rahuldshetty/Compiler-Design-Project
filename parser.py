@@ -66,7 +66,7 @@ class Parser:
                 stmts.append(temp)
                 temp=[]
 
-            if token[1]=="EOS" and len(stack)==0:
+            elif token[1]=="EOS" and len(stack)==0:
                 temp.append(token)
                 stmts.append(temp)
                 temp=[]
@@ -142,17 +142,20 @@ class Parser:
                     
             
         
-       
-
+    def tryfindMain(self):
+        try:
+            self.findMain()
+        except:
+            raise Exception("Error in parsing...")
 
 dec_code='float a,b;'
 printf_code1 = "printf(n1);"
 printf_code = "printf(\"Hello\");"
 printf_code2 = "printf(h);"
 
-main="int main() begin int a,b,c; printf('');int c,d;printf(\"hello\");  end"
+main="int main() begin int a,b; float c,d; printf(\"hello\");  end"
     
 lines="int a,b,c;printf(a);printf('f')"
 
 p=Parser(code=main)
-p.findMain()
+p.tryfindMain()
