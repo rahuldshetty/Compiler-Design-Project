@@ -1,0 +1,3 @@
+works well for valid input :)
+but...
+goes to infinite loop for invalid input :(
