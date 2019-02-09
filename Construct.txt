@@ -1,8 +1,17 @@
 int main()
 begin
 int n1, n2, n3;
+// hello world
+//hi
+//
+/* hello
+hola
+hi
+ */
+
 if( 5+4 >= 40 )
 begin
+printf("hello worl   test");
 printf( n1);
 end
 if ( expr relop expr )
