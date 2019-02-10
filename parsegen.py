@@ -109,7 +109,7 @@ class Parser:
 
 	def processProductions(self):
 		#find each productions by using ; as splitter
-		prods=[x.strip() for x in self.code.split(';')]
+		prods=[x.strip() for x in self.code.split(';;')]
 		prods=[x for x in prods if len(x)!=0]
 		prods=[self.parseProduction(x) for x in prods]
 		prodsD={}
@@ -154,9 +154,24 @@ class Parser:
 		return (head,body)
 
 
-
-
-p="E -> T E1 ; E1 ->  + T E1 | # ; T -> id ; "
+# p="E -> T E1 ;; E1 ->  + T E1 ; | # ;; T -> id ;; "
+p = """
+	S -> int main ( ) begin STMTS end ;;
+	STMTS -> STMT STMTS | # ;;
+	STMT -> datatype STMT ; | CONDITION | FUNCTION | id = E ;;
+	STMT1 -> id STMT2 ;;
+	STMT2 -> , id | = E | # ;;
+	CONDITION -> if ( E ) begin STMT end ;;
+	FUNCTION -> printf ( MSG ) ;;
+	MSG -> string | id ;;
+	E -> T E1 ;;
+	E1 -> relop T E1 | # ;;
+	T -> F T1 ;;
+	T1 -> + F T1 | - F T1 | # ;;
+	F -> H F1 ;;
+	F1 -> * H F1 | / H F1 | # ;;
+	H -> ( E ) | - H | id | digits ;;
+"""
 
 
 par=Parser(p)
