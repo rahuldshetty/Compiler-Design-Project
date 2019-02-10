@@ -3,7 +3,7 @@
 
 '''
 Rules
-1. Always terminate the production with ;
+1. Always terminate the production with ;;
 2. Place space between each symbols(terminals or non terminals).
 3. Write LL Grammar rules.
 4. Define rules for all variables used.
@@ -185,21 +185,23 @@ class Parser:
 
 p = \
     """
-	S -> int main ( ) begin STMTS end ;;
+	S -> DATATYPE PGM_START LEFT_PARA RIGHT_PARA BLOCK_START STMTS BLOCK_END ;;
 	STMTS -> STMT STMTS | # ;;
-	STMT -> datatype STMT1 ; | CONDITION | FUNCTION ; | id = E ;;
-	STMT1 -> id STMT2 ;;
-	STMT2 -> , id STMT2 | = E STMT2 | # ;;
-	CONDITION -> if ( E ) begin STMTS end ;;
-	FUNCTION -> printf ( MSG ) ;;
-	MSG -> string | id ;;
+	DATATYPE -> INTEGER | FLOAT | CHAR ;;
+	STMT -> DATATYPE STMT1 EOS | CONDITION | FUNCTION EOS ;;
+	STMT1 -> IDENTIFIER STMT2 ;;
+	STMT2 -> SEPERATOR IDENTIFIER STMT2 | ASSIGN E STMT2 | # ;;
+	CONDITION -> IF LEFT_PARA E RIGHT_PARA BLOCK_START STMTS BLOCK_END ;;
+	FUNCTION -> DISPLAY LEFT_PARA MSG RIGHT_PARA ;;
+	MSG -> STRING | IDENTIFIER | CHARACTER ;;
 	E -> T E1 ;;
 	E1 -> relop T E1 | # ;;
 	T -> F T1 ;;
-	T1 -> + F T1 | - F T1 | # ;;
+	T1 -> ADD F T1 | SUB F T1 | # ;;
 	F -> H F1 ;;
-	F1 -> * H F1 | / H F1 | # ;;
-	H -> ( E ) | - H | id | digits ;;
+	F1 -> MUL H F1 | DIV H F1 | # ;;
+	H -> LEFT_PARA E RIGHT_PARA | SUB H | IDENTIFIER | DIGITS ;;
+	relop -> EQ | NE | AND | OR | LE | LT | GE | GT ;;
 """
 
 par = Parser(p)
