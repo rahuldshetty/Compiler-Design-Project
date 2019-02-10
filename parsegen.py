@@ -51,12 +51,15 @@ def follow(symb,parser,isStart=False):
 			f=1
 			for item in body:
 				if f==0:
-					firstSet=first(item,parser)
-
-					ans+= [x for x in firstSet if x!='#']
-					if "#" in firstSet:
-						continue
-					f=1
+                                        if item in parser.terminals:
+                                                f=1
+                                                ans+=[item]
+                                                continue
+                                        firstSet=first(item,parser)
+                                        ans+= [x for x in firstSet if x!='#']
+                                        if "#" in firstSet:
+                                                continue
+                                        f=1
 				if item is symb:
 					f=0
 					continue
@@ -82,10 +85,10 @@ class Parser:
 		# get the teminals
 		for key,value in self.prods.items():
 			for item in value:
-				if item not in self.variables and item != "|":
+				if item not in self.variables and item != "|" and item !='#':
 					self.terminals.append(item)
 
-		self.terminals=list(set(self.terminals))
+		self.terminals=list(set(self.terminals))		
 		'''
 		Table format
 		M   id      +       t3   t4 ...
