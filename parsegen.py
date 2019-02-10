@@ -49,48 +49,51 @@ def first(symb, parser):
     return list(set(ans))
 
 
-def follow(symb, parser, isStart=False):
-    if visited[symb] == 191:
+def follow(symb,parser,isStart=False):
+    if visited[symb]==-1:
+        return parser.followSet[symb]
+    if visited[symb]==1:
+        visited[symb]=0;
         return []
-    visited[symb] += 1
-
-    ans = []
-    if isStart == True:
+    visited[symb]+=1
+    ans=[]
+    if isStart==True:
         ans.append('$')
     for prod in parser.prods:
-        body = parser.prods[prod]
+        body=parser.prods[prod]
         if symb in body:
-            f = 1
+            f=1
+            beforeEp=0
             for item in body:
-                if f == 0:
-                    if item == '#':
+                #open('log.txt','a').write(" ".join([symb,prod,item]) + "\n" )
+                if f==0:
+                    if item == "#":
+                        beforeEp=1
                         continue
-                    if item in parser.terminals:
-                        f = 1
-                        ans += [item]
-                        continue
-                    elif item == '|':
-                        if prod is parser.variables[0]:
-                            ans += follow(prod, parser, True)
-                        else:
-                            ans += follow(prod, parser)
+                    elif item == "|" and beforeEp==1:
+                        ans+=follow(prod,parser,prod is parser.variables[0])
+                        beforeEp=0
+                    elif item in parser.terminals:
+                        f=1
+                        ans+=[item]
+                    elif item in parser.variables:
+                        firstSet=parser.firstSet[item]
+                        ans += [x for x in firstSet if x != "#"]
+                        beforeEp=1
+                        if "#" not in firstSet:
+                            beforeEp=0
+                            f=1
 
-                        continue
-                    firstSet = parser.firstSet[item]
-                    ans += [x for x in firstSet if x != '#']
-                    if '#' in firstSet:
-                        continue
-                    f = 1
-                if item is symb:
-                    f = 0
-                    continue
-            if f == 0:
-                if prod is parser.variables[0]:
-                    ans += follow(prod, parser, True)
-                else:
-                    ans += follow(prod, parser)
-    visited[symb] = 0	
+
+                elif item == symb:
+                    f=0
+            if f==0:
+                ans+=follow(prod,parser,prod is parser.variables)
+    visited[symb]=-1
     return list(set(ans))
+
+
+
 
 
 class Parser:
@@ -106,7 +109,7 @@ class Parser:
 
         for var in self.prods.keys():
             self.variables.append(var)
-            visited[var] = -1
+            visited[var] = 0
 
         self.variables = list(set(self.variables))
 
@@ -157,17 +160,16 @@ class Parser:
                 firstSet[prod] = first(prod, self)
         self.firstSet = firstSet
         print ('First set:', firstSet)
-
-        followSet = {}
+        self.followSet = {}
         f = 0
         for prod in prodsD:
             if f == 0 and prod == prods[0][0]:
-                followSet[prod] = follow(prod, self, True)
+                self.followSet[prod] = follow(prod, self, True)
                 f = 1
             else:
-                followSet[prod] = follow(prod, self)
+                self.followSet[prod] = follow(prod, self)
 
-        print ('Follow Set:', followSet)
+        print ('Follow Set:', self.followSet)
 
     def parseProduction(self, code):
 
