@@ -161,9 +161,9 @@ class Parser:
 p = """
 	S -> int main ( ) begin STMTS end ;;
 	STMTS -> STMT STMTS | # ;;
-	STMT -> datatype STMT ; | CONDITION | FUNCTION | id = E ;;
+	STMT -> datatype STMT1 ; | CONDITION | FUNCTION | id = E ;;
 	STMT1 -> id STMT2 ;;
-	STMT2 -> , id | = E | # ;;
+	STMT2 -> , id STMT2 | = E | # ;;
 	CONDITION -> if ( E ) begin STMT end ;;
 	FUNCTION -> printf ( MSG ) ;;
 	MSG -> string | id ;;
