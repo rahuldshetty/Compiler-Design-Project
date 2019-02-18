@@ -90,7 +90,7 @@ def follow(symb,parser,isStart=False):
             if f==0:
                 ans+=follow(prod,parser,prod is parser.variables[0])
     visited[symb]=-1
-    parser.followSet[symb]=ans
+    parser.followSet[symb]=list(set(ans))
     return list(set(ans))
 
 
