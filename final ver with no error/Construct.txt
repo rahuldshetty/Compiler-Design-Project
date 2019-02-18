@@ -1,0 +1,8 @@
+int main()
+begin
+int a,b;
+if (4+5 > 6)
+begin 
+printf(a);
+end
+end
