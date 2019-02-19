@@ -104,7 +104,7 @@ class Parser:
 
     def createEmptyTable(self):
         self.variables = []
-        self.terminals = []
+        self.terminals = ["$"]
 
         # Get the variables
 
@@ -151,7 +151,8 @@ class Parser:
         self.prods = prodsD
 
         self.createEmptyTable()
-
+        ff=open('logparse.txt','w')
+        ff.write('First Set:\n')
         firstSet = {}
        	f = 0
         for prod in prodsD:
@@ -159,8 +160,11 @@ class Parser:
                 firstSet[prod] = first(prod, self)
             else:
                 firstSet[prod] = first(prod, self)
+            ff.write(prod+":  " + str(firstSet[prod])+"\n")
+        
+       
         self.firstSet = firstSet
-        print ('First set:', firstSet)
+        ff.write('\nFollow Set:\n')
         self.followSet = {}
         f = 0
         for prod in prodsD:
@@ -169,17 +173,17 @@ class Parser:
                 f = 1
             else:
                 self.followSet[prod] = follow(prod, self)
+            ff.write(prod+":  " + str(self.followSet[prod])+"\n")
 
-        print ('Follow Set:', self.followSet)
-
-       	print("Post procedure:")
         for prod in self.prods:
         	self.postProcessTable(prod,self.prods[prod])
 
-       	print("Table:")
-       	for row in self.table:
-       	    print(row)
-       	    print("--------------")
+        ff.write('\nTerminals:'+str(self.terminals)+"\n")
+
+        ff.write("\nParsing Table:\n")
+
+       	for row in range(len(self.table)):
+            ff.write( self.variables[row] +" :   " + str(self.table[row])+"\n\n")
 
 
     def postProcessTable(self,head,production):

@@ -18,12 +18,14 @@ def parse(inp,startSymbol,nonTerminals,terminals,parsingTable):
                 print(nonTerminals[nonTerminals.index(stack[j])], "->", " ".join(production))
                 stack.pop()
                 j -= 1
-                if(production[0] != "#"):
+                if("#" not in production):
                     for ele in production[::-1]:
                         stack.append(ele)
                         j += 1
                     # print(stack)
-            # print(stack)
+            else:
+                # manage error
+                break
         except:
             break
     # print(matched, inp[:-1], stack)
