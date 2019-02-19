@@ -8,5 +8,4 @@ Goto "final ver with no error" , its the parsing program with no error handling.
 
 # TODO
 1. Error handling
-2. Problem with assignment during declaration
-3. Add more Grammar rules ?
+2. Add more Grammar rules ?
