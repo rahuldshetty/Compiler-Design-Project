@@ -36,30 +36,35 @@ TOKEN_DESC={ "=":"ASSIGN" ,
 class Tokenizer:
 	def tokenize(code):
 		tokenSet="("+")|(".join(TOKENS)+")"
-		p=re.findall(tokenSet,code)
 		tokens=[]
-		for ele in p:
-			for item in ele:
-				if item!='':
-					tokens.append(item)
+		lc_no = 1
+		lines=[]
+		for line in code.split('\n'):
+			p=re.findall(tokenSet,line)
+			for ele in p:
+				for item in ele:
+					if item!='':
+						tokens.append(item)
+						lines.append(lc_no)
+			lc_no+=1
 		Token=[]
-		for token in tokens:
+		for i,token in enumerate(tokens):
 			if token not in TOKEN_DESC:
 				if re.match(r'\".*\"',token):
-					Token.append((token,'STRING'))
+					Token.append((token,'STRING',lines[i]))
 				elif re.match(r'\'.?\'',token):
-					Token.append((token,'CHARACTER'))
+					Token.append((token,'CHARACTER',lines[i]))
 				elif re.match("'",token):
-					Token.append((token,'SINGLE_QUOTE'))
+					Token.append((token,'SINGLE_QUOTE',lines[i]))
 				elif re.match('"',token):
-					Token.append((token,'DOUBLE_QUOTE'))
+					Token.append((token,'DOUBLE_QUOTE',lines[i]))
 				elif re.match(r'[a-zA-Z][a-zA-Z0-9]*',token):
-					Token.append((token,'IDENTIFIER'))
+					Token.append((token,'IDENTIFIER',lines[i]))
 				elif re.match(r'[0-9]+',token):
-					Token.append((token,'DIGITS'))
+					Token.append((token,'DIGITS',lines[i]))
 
 			else:
-				Token.append((token,TOKEN_DESC[token]))
+				Token.append((token,TOKEN_DESC[token],lines[i]))
 		return Token
 
 

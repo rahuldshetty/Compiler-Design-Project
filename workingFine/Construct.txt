@@ -1,0 +1,7 @@
+int main()
+begin
+if ( +5 >= 7 )
+begin
+printf(a);
+end
+end

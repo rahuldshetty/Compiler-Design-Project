@@ -3,33 +3,80 @@ def parse(inp,startSymbol,nonTerminals,terminals,parsingTable):
     stack = ["$", startSymbol ]
     i, j = 0, 1
     matched = []
-    while(inp[i][1] != "$"):
+    error=[]
+    errorFlag=False
+    while(inp[i][1] != "$" and stack[j]!="$"):
+        print("-"*100)
         # print(i, j)
         try:
             if(stack[j] == inp[i][1]):
-                print("Match", inp[i])
+                print("Stack:  "+",".join(str(x) for x in stack),"Input: " + ",".join(str(x[0]) for x in inp[i:]),"Action: Match "+str(inp[i][1]),sep="\n" )
                 matched.append(inp[i])
+                errorFlag=False
                 stack.pop()
                 i += 1
                 j -= 1
                 # print(stack, inp, i)
             elif(stack[j] in nonTerminals):
                 production = parsingTable[nonTerminals.index(stack[j])][terminals.index(inp[i][1])]
-                print(nonTerminals[nonTerminals.index(stack[j])], "->", " ".join(production))
-                stack.pop()
-                j -= 1
-                if("#" not in production):
-                    for ele in production[::-1]:
-                        stack.append(ele)
-                        j += 1
-                    # print(stack)
+                if "sync" in production:
+                    print("Error pop:",stack[j])
+                    if errorFlag==False:
+                        error.append("Error in line no. "+str(inp[i][2]))
+                        errorFlag=True
+                    stack.pop()
+                    j-=1
+                elif len(production)==0:
+                    print("Error skip1:",inp[i])
+                    if errorFlag==False:
+                        error.append("Error in line no. "+str(inp[i][2]))
+                        errorFlag=True
+                    i+=1
+                elif inp[i][1] != stack[j] and len(production)==0:
+                    if len(stack)==2:
+                        print("Error skip:",inp[i])
+                        if errorFlag==False:
+                            error.append("Error in line no. "+str(inp[i][2]))
+                            errorFlag=True
+                        i+=1
+                    else:
+                        print("Error pop:",stack[j])
+                        if errorFlag==False:
+                            error.append("Error in line no. "+str(inp[i][2]))
+                            errorFlag=True
+                        stack.pop()
+                        j-=1
+                else:  
+                    f=(nonTerminals[nonTerminals.index(stack[j])]+ "->" + " ".join(production))
+                    print("Stack:  "+",".join(str(x) for x in stack),"Input: " + ",".join(str(x[0]) for x in inp[i:]),"Action: Output "+str(f),sep="\n" )               
+                    errorFlag=False
+                    stack.pop()
+                    j -= 1
+                    if("#" not in production):
+                        for ele in production[::-1]:
+                            stack.append(ele)
+                            j += 1
+                        # print(stack)
             else:
                 # manage error
-                break
+                print("Error skip:",inp[i])
+                if errorFlag==False:
+                    error.append("Error in line no. "+str(inp[i][2]))
+                    errorFlag=True
+                i+=1
+                
         except:
             break
     # print(matched, inp[:-1], stack)
     if(matched != inp[:-1] or stack != ["$"]):
+        print("-"*100)
+        print("Result:")
         print("Invalid input!")
+        print("Errors:")
+        for line in error:
+            print(line)
+
     else:
+        print("-"*100)
+        print("Result:")
         print("Valid input!")

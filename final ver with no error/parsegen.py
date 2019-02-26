@@ -178,6 +178,15 @@ class Parser:
         for prod in self.prods:
         	self.postProcessTable(prod,self.prods[prod])
 
+        for prodIndex,prodH in enumerate(self.followSet):
+                followset = self.followSet[prodH]
+                print(followset,prodH)
+                if len(followset)==0:continue
+                for i in range(len(self.terminals)):
+                    if len(self.table[prodIndex][i])==0:
+                        if self.terminals[i] in followset:
+                            self.table[prodIndex][i]=['sync']
+
         ff.write('\nTerminals:'+str(self.terminals)+"\n")
 
         ff.write("\nParsing Table:\n")
@@ -223,6 +232,8 @@ class Parser:
             for term in tempFirst:
             	termIndex=self.terminals.index(term)
             	self.table[varIndex][termIndex]+=body
+
+            
 
             
 
