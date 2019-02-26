@@ -1,0 +1,8 @@
+int main()
+begin
+int a,b=45,;
+if (4+5>=5)
+begin 
+int a=;
+end
+end
