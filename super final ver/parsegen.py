@@ -52,7 +52,7 @@ def first(symb, parser):
 def follow(symb,parser,startSymb=""):
     if visited[symb]==-1:
         return parser.followSet[symb]
-    if visited[symb]==7:
+    if visited[symb]==10:
         visited[symb]=0
         return [] if startSymb!="" else ['$']
     visited[symb]+=1

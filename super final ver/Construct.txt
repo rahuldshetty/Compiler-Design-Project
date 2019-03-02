@@ -1,8 +1,5 @@
 int main()
 begin
-int a,b=45,;
-if (4+5>=5)
-begin 
-int a=;
-end
+int a=45+1-7*(4-5)*1*(1+4)/-4;
+int a;
 end
