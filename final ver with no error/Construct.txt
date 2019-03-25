@@ -1,7 +1,8 @@
 int main()
 begin
-int a,b;
-if (4+5>=5)
-begin 
-end
+    int a,b;
+    if (4+5>=5)
+    begin 
+        print("hello")
+    end
 end

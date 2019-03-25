@@ -1,83 +1,83 @@
 First Set:
-S:  ['CHAR', 'FLOAT', 'INTEGER']
-STMTS:  ['CHAR', '#', 'DISPLAY', 'IF', 'FLOAT', 'INTEGER']
+S:  ['FLOAT', 'INTEGER', 'CHAR']
+STMTS:  ['FLOAT', 'CHAR', 'IF', 'DISPLAY', 'INTEGER', '#']
 DATATYPE:  ['FLOAT', 'INTEGER', 'CHAR']
-STMT:  ['CHAR', 'DISPLAY', 'IF', 'FLOAT', 'INTEGER']
-DECLARATION:  ['CHAR', 'FLOAT', 'INTEGER']
+STMT:  ['FLOAT', 'CHAR', 'IF', 'DISPLAY', 'INTEGER']
+DECLARATION:  ['FLOAT', 'INTEGER', 'CHAR']
 STMT1:  ['IDENTIFIER']
-STMT2:  ['ASSIGN', '#', 'SEPERATOR']
-STMT3:  ['#', 'SEPERATOR']
+STMT2:  ['ASSIGN', 'SEPERATOR', '#']
+STMT3:  ['SEPERATOR', '#']
 CONDITION:  ['IF']
 FUNCTION:  ['DISPLAY']
-MSG:  ['STRING', 'CHARACTER', 'IDENTIFIER']
+MSG:  ['CHARACTER', 'STRING', 'IDENTIFIER']
 E:  ['LEFT_PARA', 'SUB', 'DIGITS', 'IDENTIFIER']
-E1:  ['EQ', '#', 'GE', 'LE', 'GT', 'OR', 'LT', 'NE', 'AND']
-T:  ['LEFT_PARA', 'SUB', 'DIGITS', 'IDENTIFIER']
-T1:  ['#', 'SUB', 'ADD']
+E1:  ['AND', 'GT', 'LT', 'GE', 'LE', '#', 'OR', 'NE', 'EQ']
+T:  ['SUB', 'DIGITS', 'LEFT_PARA', 'IDENTIFIER']
+T1:  ['SUB', 'ADD', '#']
 F:  ['LEFT_PARA', 'SUB', 'DIGITS', 'IDENTIFIER']
-F1:  ['#', 'MUL', 'DIV']
-H:  ['LEFT_PARA', 'SUB', 'DIGITS', 'IDENTIFIER']
-relop:  ['EQ', 'GE', 'LE', 'GT', 'OR', 'LT', 'NE', 'AND']
+F1:  ['MUL', '#', 'DIV']
+H:  ['SUB', 'DIGITS', 'LEFT_PARA', 'IDENTIFIER']
+relop:  ['AND', 'GT', 'LT', 'GE', 'LE', 'OR', 'NE', 'EQ']
 
 Follow Set:
 S:  ['$']
 STMTS:  ['BLOCK_END']
 DATATYPE:  ['PGM_START', 'IDENTIFIER']
-STMT:  ['CHAR', 'DISPLAY', 'IF', 'FLOAT', 'BLOCK_END', 'INTEGER']
+STMT:  ['FLOAT', 'BLOCK_END', 'CHAR', 'IF', 'DISPLAY', 'INTEGER']
 DECLARATION:  ['EOS']
-STMT1:  ['ASSIGN', 'EOS']
+STMT1:  ['EOS', 'ASSIGN']
 STMT2:  []
 STMT3:  []
 CONDITION:  ['DISPLAY']
 FUNCTION:  ['EOS']
 MSG:  ['RIGHT_PARA']
 E:  ['RIGHT_PARA', 'SEPERATOR']
-E1:  ['RIGHT_PARA', 'SEPERATOR']
-T:  ['EQ', 'SEPERATOR', 'RIGHT_PARA', 'GE', 'LE', 'GT', 'OR', 'LT', 'NE', 'AND']
-T1:  ['EQ', 'SEPERATOR', 'SUB', 'RIGHT_PARA', 'GE', 'LE', 'GT', 'OR', 'LT', 'NE', 'AND']
-F:  ['EQ', 'SUB', 'SEPERATOR', 'ADD', 'RIGHT_PARA', 'GE', 'LE', 'GT', 'OR', 'LT', 'NE', 'AND']
-F1:  ['EQ', 'SUB', 'SEPERATOR', 'ADD', 'RIGHT_PARA', 'GE', 'LE', 'GT', 'OR', 'LT', 'NE', 'AND', 'DIV']
-H:  ['EQ', 'MUL', 'SEPERATOR', 'SUB', 'ADD', 'RIGHT_PARA', 'GE', 'LE', 'IDENTIFIER', 'GT', 'OR', 'LT', 'NE', 'AND', 'DIV']
+E1:  ['SEPERATOR', 'RIGHT_PARA']
+T:  ['AND', 'GT', 'LT', 'GE', 'LE', 'SEPERATOR', 'RIGHT_PARA', 'OR', 'NE', 'EQ']
+T1:  ['AND', 'GT', 'LT', 'GE', 'LE', 'NE', 'RIGHT_PARA', 'SUB', 'OR', 'SEPERATOR', 'EQ']
+F:  ['RIGHT_PARA', 'AND', 'ADD', 'GT', 'LT', 'GE', 'LE', 'NE', 'SUB', 'OR', 'SEPERATOR', 'EQ']
+F1:  ['AND', 'ADD', 'GT', 'LT', 'DIV', 'GE', 'LE', 'SEPERATOR', 'NE', 'SUB', 'OR', 'RIGHT_PARA', 'EQ']
+H:  ['AND', 'ADD', 'GT', 'LT', 'DIV', 'GE', 'LE', 'SEPERATOR', 'NE', 'IDENTIFIER', 'MUL', 'SUB', 'OR', 'RIGHT_PARA', 'EQ']
 relop:  ['LEFT_PARA', 'SUB', 'DIGITS', 'IDENTIFIER']
 
-Terminals:['SEPERATOR', 'SUB', 'FLOAT', 'NE', 'DIGITS', 'EQ', 'DISPLAY', 'GE', 'IF', 'IDENTIFIER', 'LEFT_PARA', 'ASSIGN', 'OR', 'LT', 'STRING', 'AND', 'INTEGER', '$', 'MUL', 'BLOCK_START', 'PGM_START', 'ADD', 'RIGHT_PARA', 'BLOCK_END', 'LE', 'GT', 'EOS', 'DIV', 'CHAR', 'CHARACTER']
+Terminals:['FLOAT', 'AND', 'ADD', 'CHAR', 'STRING', 'SUB', 'INTEGER', 'EQ', '$', 'GT', 'ASSIGN', 'BLOCK_START', 'MUL', 'OR', 'SEPERATOR', 'EOS', 'BLOCK_END', 'LE', 'DIGITS', 'DISPLAY', 'NE', 'PGM_START', 'LT', 'LEFT_PARA', 'DIV', 'GE', 'CHARACTER', 'IF', 'IDENTIFIER', 'RIGHT_PARA']
 
 Parsing Table:
-T :   [[], ['F', 'T1'], [], [], ['F', 'T1'], [], [], [], [], ['F', 'T1'], ['F', 'T1'], [], [], [], [], [], [], ['sync'], [], [], [], [], [], [], [], [], [], [], [], []]
+H :   [[], [], [], [], [], ['SUB', 'H'], [], [], ['sync'], [], [], [], [], [], [], [], [], [], ['DIGITS'], [], [], [], [], ['LEFT_PARA', 'E', 'RIGHT_PARA'], [], [], [], [], ['IDENTIFIER'], []]
 
-STMT3 :   [['SEPERATOR', 'STMT1'], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ['sync'], [], [], [], [], [], []]
+E :   [[], [], [], [], [], ['T', 'E1'], [], [], [], [], [], [], [], [], [], [], ['sync'], [], ['T', 'E1'], [], [], [], [], ['T', 'E1'], [], [], [], [], ['T', 'E1'], []]
 
-relop :   [[], [], [], ['NE'], [], ['EQ'], [], ['GE'], [], ['sync'], [], [], ['OR'], ['LT'], [], ['AND'], [], [], [], [], ['sync'], [], [], [], ['LE'], ['GT'], [], [], [], []]
+T1 :   [[], ['#'], ['ADD', 'F', 'T1'], [], [], ['SUB', 'F', 'T1', '#'], [], ['#'], [], ['#'], [], [], [], ['#'], ['#'], [], [], ['#'], [], [], ['#'], ['sync'], ['#'], [], [], ['#'], [], [], ['sync'], ['#']]
 
-CONDITION :   [[], [], ['sync'], [], [], [], ['sync'], [], ['IF', 'LEFT_PARA', 'E', 'RIGHT_PARA', 'BLOCK_START', 'STMTS', 'BLOCK_END'], [], [], [], [], [], [], [], ['sync'], [], [], [], [], [], [], ['sync'], [], [], [], [], ['sync'], []]
+relop :   [['sync'], ['AND'], [], ['sync'], [], [], ['sync'], ['EQ'], [], ['GT'], [], [], [], ['OR'], [], [], ['sync'], ['LE'], [], ['sync'], ['NE'], [], ['LT'], [], [], ['GE'], [], ['sync'], [], []]
 
-STMT :   [[], [], ['DECLARATION', 'EOS'], [], [], [], ['FUNCTION', 'EOS'], [], ['CONDITION'], [], [], [], [], [], [], [], ['DECLARATION', 'EOS'], [], [], [], [], [], [], [], [], [], ['sync'], [], ['DECLARATION', 'EOS'], []]
+T :   [[], [], [], [], [], ['F', 'T1'], [], [], [], [], [], [], [], [], [], ['sync'], [], [], ['F', 'T1'], [], [], [], [], ['F', 'T1'], [], [], [], [], ['F', 'T1'], []]
 
-DECLARATION :   [[], [], ['DATATYPE', 'STMT1'], [], [], [], [], [], [], [], [], [], [], [], [], [], ['DATATYPE', 'STMT1'], [], [], [], [], [], [], [], [], [], [], [], ['DATATYPE', 'STMT1'], []]
+STMT3 :   [[], [], [], [], [], [], [], [], [], [], [], [], [], [], ['SEPERATOR', 'STMT1'], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
 
-F :   [[], ['H', 'F1'], [], [], ['H', 'F1'], [], [], [], [], ['H', 'F1'], ['H', 'F1'], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
+F :   [[], [], [], [], [], ['H', 'F1'], [], [], [], [], [], [], [], [], [], [], [], [], ['H', 'F1'], [], [], [], [], ['H', 'F1'], [], [], [], [], ['H', 'F1'], []]
 
-T1 :   [['#'], ['SUB', 'F', 'T1', '#'], [], ['#'], [], ['#'], [], ['#'], [], [], [], ['sync'], ['#'], ['#'], [], ['#'], [], [], [], [], [], ['ADD', 'F', 'T1'], ['#'], [], ['#'], ['#'], ['sync'], [], [], []]
+DECLARATION :   [['DATATYPE', 'STMT1'], [], [], ['DATATYPE', 'STMT1'], [], [], ['DATATYPE', 'STMT1'], [], [], [], ['sync'], [], [], [], [], ['sync'], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
 
-F1 :   [['#'], ['#'], [], ['#'], [], ['#'], ['sync'], ['#'], [], [], [], [], ['#'], ['#'], [], ['#'], [], [], ['MUL', 'H', 'F1'], [], [], ['#'], ['#'], [], ['#'], ['#'], [], ['DIV', 'H', 'F1', '#'], [], []]
+STMT :   [['DECLARATION', 'EOS'], [], [], ['DECLARATION', 'EOS'], [], [], ['DECLARATION', 'EOS'], [], [], [], [], [], [], [], [], [], [], [], [], ['FUNCTION', 'EOS'], [], [], [], [], [], [], [], ['CONDITION'], [], []]
 
-STMT2 :   [['SEPERATOR', 'STMT1'], [], [], [], [], [], [], [], [], [], [], ['ASSIGN', 'E', 'STMT3'], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ['sync'], [], [], []]
+DATATYPE :   [['FLOAT'], [], [], ['CHAR'], [], [], ['INTEGER'], [], [], [], [], [], [], [], [], ['sync'], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
 
-E1 :   [['#'], [], [], ['relop', 'T', 'E1'], [], ['relop', 'T', 'E1'], [], ['relop', 'T', 'E1'], [], [], [], [], ['relop', 'T', 'E1'], ['relop', 'T', 'E1'], [], ['relop', 'T', 'E1'], [], [], [], [], [], [], ['#'], [], ['relop', 'T', 'E1'], ['relop', 'T', 'E1'], [], [], [], []]
+MSG :   [[], [], [], [], ['STRING'], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ['CHARACTER'], [], ['IDENTIFIER'], ['sync']]
 
-STMTS :   [['sync'], [], ['STMT', 'STMTS'], [], [], [], ['STMT', 'STMTS'], [], ['STMT', 'STMTS'], [], [], [], [], [], [], [], ['STMT', 'STMTS'], [], [], [], [], [], ['sync'], ['#'], [], [], [], [], ['STMT', 'STMTS'], []]
+S :   [['DATATYPE', 'PGM_START', 'LEFT_PARA', 'RIGHT_PARA', 'BLOCK_START', 'STMTS', 'BLOCK_END'], [], [], ['DATATYPE', 'PGM_START', 'LEFT_PARA', 'RIGHT_PARA', 'BLOCK_START', 'STMTS', 'BLOCK_END'], [], [], ['DATATYPE', 'PGM_START', 'LEFT_PARA', 'RIGHT_PARA', 'BLOCK_START', 'STMTS', 'BLOCK_END'], [], [], [], [], [], [], [], ['sync'], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ['sync']]
 
-S :   [['sync'], [], ['DATATYPE', 'PGM_START', 'LEFT_PARA', 'RIGHT_PARA', 'BLOCK_START', 'STMTS', 'BLOCK_END'], [], [], [], [], [], [], [], [], [], [], [], [], [], ['DATATYPE', 'PGM_START', 'LEFT_PARA', 'RIGHT_PARA', 'BLOCK_START', 'STMTS', 'BLOCK_END'], [], [], [], [], [], ['sync'], [], [], [], [], [], ['DATATYPE', 'PGM_START', 'LEFT_PARA', 'RIGHT_PARA', 'BLOCK_START', 'STMTS', 'BLOCK_END'], []]
+STMT2 :   [[], [], [], [], [], [], [], [], [], [], ['ASSIGN', 'E', 'STMT3'], [], [], [], ['SEPERATOR', 'STMT1'], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ['sync']]
 
-FUNCTION :   [['sync'], [], [], ['sync'], [], ['sync'], ['DISPLAY', 'LEFT_PARA', 'MSG', 'RIGHT_PARA'], ['sync'], [], [], [], [], ['sync'], ['sync'], [], ['sync'], [], [], [], [], [], [], ['sync'], [], ['sync'], ['sync'], [], [], [], []]
+STMTS :   [['STMT', 'STMTS'], ['sync'], [], ['STMT', 'STMTS'], [], [], ['STMT', 'STMTS'], ['sync'], [], ['sync'], [], [], [], ['sync'], ['sync'], [], ['#'], ['sync'], [], ['STMT', 'STMTS'], ['sync'], [], ['sync'], [], [], ['sync'], [], ['STMT', 'STMTS'], [], ['sync']]
 
-DATATYPE :   [['sync'], ['sync'], ['FLOAT'], ['sync'], [], ['sync'], [], ['sync'], [], [], [], [], ['sync'], ['sync'], [], ['sync'], ['INTEGER'], [], [], [], [], [], ['sync'], [], ['sync'], ['sync'], [], [], ['CHAR'], []]
+FUNCTION :   [[], ['sync'], [], [], [], ['sync'], [], ['sync'], [], ['sync'], [], [], [], ['sync'], ['sync'], [], [], ['sync'], [], ['DISPLAY', 'LEFT_PARA', 'MSG', 'RIGHT_PARA'], ['sync'], [], ['sync'], [], [], ['sync'], [], [], [], ['sync']]
 
-H :   [['sync'], ['SUB', 'H'], [], ['sync'], ['DIGITS'], ['sync'], [], ['sync'], [], ['IDENTIFIER'], ['LEFT_PARA', 'E', 'RIGHT_PARA'], [], ['sync'], ['sync'], [], ['sync'], [], [], [], [], [], ['sync'], ['sync'], [], ['sync'], ['sync'], [], [], [], []]
+F1 :   [[], ['#'], ['#'], [], [], ['#'], [], ['#'], [], ['#'], [], [], ['MUL', 'H', 'F1'], ['#'], ['#'], [], [], ['#'], [], [], ['#'], [], ['#'], [], ['DIV', 'H', 'F1', '#'], ['#'], [], [], [], ['#']]
 
-STMT1 :   [['sync'], ['sync'], [], ['sync'], [], ['sync'], [], ['sync'], [], ['IDENTIFIER', 'STMT2'], [], [], ['sync'], ['sync'], [], ['sync'], [], [], [], [], [], ['sync'], ['sync'], [], ['sync'], ['sync'], [], ['sync'], [], []]
+E1 :   [[], ['relop', 'T', 'E1'], ['sync'], [], [], ['sync'], [], ['relop', 'T', 'E1'], [], ['relop', 'T', 'E1'], [], [], [], ['relop', 'T', 'E1'], ['#'], [], [], ['relop', 'T', 'E1'], [], [], ['relop', 'T', 'E1'], [], ['relop', 'T', 'E1'], [], ['sync'], ['relop', 'T', 'E1'], [], [], [], ['#']]
 
-MSG :   [['sync'], ['sync'], [], ['sync'], [], ['sync'], [], ['sync'], [], ['IDENTIFIER'], [], [], ['sync'], ['sync'], ['STRING'], ['sync'], [], [], ['sync'], [], [], ['sync'], ['sync'], [], ['sync'], ['sync'], [], ['sync'], [], ['CHARACTER']]
+CONDITION :   [[], ['sync'], ['sync'], [], [], ['sync'], [], ['sync'], [], ['sync'], [], [], ['sync'], ['sync'], ['sync'], [], [], ['sync'], [], [], ['sync'], [], ['sync'], [], ['sync'], ['sync'], [], ['IF', 'LEFT_PARA', 'E', 'RIGHT_PARA', 'BLOCK_START', 'STMTS', 'BLOCK_END'], ['sync'], ['sync']]
 
-E :   [[], ['T', 'E1'], [], [], ['T', 'E1'], [], [], [], [], ['T', 'E1'], ['T', 'E1'], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
+STMT1 :   [[], [], [], [], [], ['sync'], [], [], [], [], [], [], [], [], [], [], [], [], ['sync'], [], [], [], [], ['sync'], [], [], [], [], ['IDENTIFIER', 'STMT2'], []]
 

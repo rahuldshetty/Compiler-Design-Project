@@ -1,0 +1,176 @@
+Output of Lexer
+Token		Lexeme
+------------------------------
+int		INTEGER
+main		PGM_START
+(		LEFT_PARA
+)		RIGHT_PARA
+begin		BLOCK_START
+int		INTEGER
+a		IDENTIFIER
+=		ASSIGN
+45		DIGITS
+,		SEPERATOR
+;		EOS
+end		BLOCK_END
+
+
+Output of Parser
+----------------------------------------------------------------------------------------------------
+Round: 1
+Stack:  $,S
+Input: int,main,(,),begin,int,a,=,45,,,;,end,$
+Action: Output S->DATATYPE PGM_START LEFT_PARA RIGHT_PARA BLOCK_START STMTS BLOCK_END
+----------------------------------------------------------------------------------------------------
+Round: 2
+Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,LEFT_PARA,PGM_START,DATATYPE
+Input: int,main,(,),begin,int,a,=,45,,,;,end,$
+Action: Output DATATYPE->INTEGER
+----------------------------------------------------------------------------------------------------
+Round: 3
+Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,LEFT_PARA,PGM_START,INTEGER
+Input: int,main,(,),begin,int,a,=,45,,,;,end,$
+Action: Match INTEGER
+----------------------------------------------------------------------------------------------------
+Round: 4
+Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,LEFT_PARA,PGM_START
+Input: main,(,),begin,int,a,=,45,,,;,end,$
+Action: Match PGM_START
+----------------------------------------------------------------------------------------------------
+Round: 5
+Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,LEFT_PARA
+Input: (,),begin,int,a,=,45,,,;,end,$
+Action: Match LEFT_PARA
+----------------------------------------------------------------------------------------------------
+Round: 6
+Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA
+Input: ),begin,int,a,=,45,,,;,end,$
+Action: Match RIGHT_PARA
+----------------------------------------------------------------------------------------------------
+Round: 7
+Stack:  $,BLOCK_END,STMTS,BLOCK_START
+Input: begin,int,a,=,45,,,;,end,$
+Action: Match BLOCK_START
+----------------------------------------------------------------------------------------------------
+Round: 8
+Stack:  $,BLOCK_END,STMTS
+Input: int,a,=,45,,,;,end,$
+Action: Output STMTS->STMT STMTS
+----------------------------------------------------------------------------------------------------
+Round: 9
+Stack:  $,BLOCK_END,STMTS,STMT
+Input: int,a,=,45,,,;,end,$
+Action: Output STMT->DECLARATION EOS
+----------------------------------------------------------------------------------------------------
+Round: 10
+Stack:  $,BLOCK_END,STMTS,EOS,DECLARATION
+Input: int,a,=,45,,,;,end,$
+Action: Output DECLARATION->DATATYPE STMT1
+----------------------------------------------------------------------------------------------------
+Round: 11
+Stack:  $,BLOCK_END,STMTS,EOS,STMT1,DATATYPE
+Input: int,a,=,45,,,;,end,$
+Action: Output DATATYPE->INTEGER
+----------------------------------------------------------------------------------------------------
+Round: 12
+Stack:  $,BLOCK_END,STMTS,EOS,STMT1,INTEGER
+Input: int,a,=,45,,,;,end,$
+Action: Match INTEGER
+----------------------------------------------------------------------------------------------------
+Round: 13
+Stack:  $,BLOCK_END,STMTS,EOS,STMT1
+Input: a,=,45,,,;,end,$
+Action: Output STMT1->LIST STMT2
+----------------------------------------------------------------------------------------------------
+Round: 14
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,LIST
+Input: a,=,45,,,;,end,$
+Action: Output LIST->IDENTIFIER STMT3
+----------------------------------------------------------------------------------------------------
+Round: 15
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,STMT3,IDENTIFIER
+Input: a,=,45,,,;,end,$
+Action: Match IDENTIFIER
+----------------------------------------------------------------------------------------------------
+Round: 16
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,STMT3
+Input: =,45,,,;,end,$
+Action: Output STMT3->ASSIGN E
+----------------------------------------------------------------------------------------------------
+Round: 17
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E,ASSIGN
+Input: =,45,,,;,end,$
+Action: Match ASSIGN
+----------------------------------------------------------------------------------------------------
+Round: 18
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E
+Input: 45,,,;,end,$
+Action: Output E->E2 E1
+----------------------------------------------------------------------------------------------------
+Round: 19
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E2
+Input: 45,,,;,end,$
+Action: Output E2->T E3
+----------------------------------------------------------------------------------------------------
+Round: 20
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3,T
+Input: 45,,,;,end,$
+Action: Output T->F T1
+----------------------------------------------------------------------------------------------------
+Round: 21
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3,T1,F
+Input: 45,,,;,end,$
+Action: Output F->DIGITS
+----------------------------------------------------------------------------------------------------
+Round: 22
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3,T1,DIGITS
+Input: 45,,,;,end,$
+Action: Match DIGITS
+----------------------------------------------------------------------------------------------------
+Round: 23
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3,T1
+Input: ,,;,end,$
+Action: Output T1->#
+----------------------------------------------------------------------------------------------------
+Round: 24
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3
+Input: ,,;,end,$
+Action: Output E3->#
+----------------------------------------------------------------------------------------------------
+Round: 25
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1
+Input: ,,;,end,$
+Action: Output E1->#
+----------------------------------------------------------------------------------------------------
+Round: 26
+Stack:  $,BLOCK_END,STMTS,EOS,STMT2
+Input: ,,;,end,$
+Action: Output STMT2->SEPERATOR STMT1
+----------------------------------------------------------------------------------------------------
+Round: 27
+Stack:  $,BLOCK_END,STMTS,EOS,STMT1,SEPERATOR
+Input: ,,;,end,$
+Action: Match SEPERATOR
+----------------------------------------------------------------------------------------------------
+Round: 28
+Error pop: STMT1
+----------------------------------------------------------------------------------------------------
+Round: 29
+Stack:  $,BLOCK_END,STMTS,EOS
+Input: ;,end,$
+Action: Match EOS
+----------------------------------------------------------------------------------------------------
+Round: 30
+Stack:  $,BLOCK_END,STMTS
+Input: end,$
+Action: Output STMTS->#
+----------------------------------------------------------------------------------------------------
+Round: 31
+Stack:  $,BLOCK_END
+Input: end,$
+Action: Match BLOCK_END
+----------------------------------------------------------------------------------------------------
+Result:
+Invalid input!
+Errors:
+Error near line no. 3

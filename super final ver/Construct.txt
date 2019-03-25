@@ -1,5 +1,4 @@
 int main()
 begin
-int a=45+1-7*(4-5)*1*(1+4)/-4;
-int a;
+    int a=45, ;
 end

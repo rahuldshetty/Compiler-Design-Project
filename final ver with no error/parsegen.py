@@ -233,13 +233,6 @@ class Parser:
             	termIndex=self.terminals.index(term)
             	self.table[varIndex][termIndex]+=body
 
-            
-
-            
-
-
-
-
     def parseProduction(self, code):
 
         # Production of the form A -> B | A ;
