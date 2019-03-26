@@ -1,4 +1,6 @@
 int main()
 begin
-    int a=45, ;
+    char a;
+    a = 'g';
+    int a;
 end

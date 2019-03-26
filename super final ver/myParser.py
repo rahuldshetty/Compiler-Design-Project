@@ -1,4 +1,4 @@
-def parse(inp,startSymbol,nonTerminals,terminals,parsingTable):
+def parse(inp,startSymbol,nonTerminals,terminals,parsingTable,symbolTable):
     inp.append(("$","$"))
     stack = ["$", startSymbol ]
     i, j = 0, 1
@@ -6,6 +6,9 @@ def parse(inp,startSymbol,nonTerminals,terminals,parsingTable):
     error=[]
     errorFlag=False
     rounds=1
+
+  
+
     while(inp[i][1] != "$" and stack[j]!="$"):
         print("-"*100)
         print("Round:",rounds)
@@ -14,6 +17,7 @@ def parse(inp,startSymbol,nonTerminals,terminals,parsingTable):
         try:
             if(stack[j] == inp[i][1]):
                 print("Stack:  "+",".join(str(x) for x in stack),"Input: " + ",".join(str(x[0]) for x in inp[i:]),"Action: Match "+str(inp[i][1]),sep="\n" )
+                symbolTable.updateMatch(inp[i])
                 matched.append(inp[i])
                 errorFlag=False
                 stack.pop()
@@ -51,6 +55,7 @@ def parse(inp,startSymbol,nonTerminals,terminals,parsingTable):
                         j-=1
                 else:  
                     f=(nonTerminals[nonTerminals.index(stack[j])]+ "->" + " ".join(production))
+                    symbolTable.updateOutput(nonTerminals[nonTerminals.index(stack[j])],production)
                     print("Stack:  "+",".join(str(x) for x in stack),"Input: " + ",".join(str(x[0]) for x in inp[i:]),"Action: Output "+str(f),sep="\n" )               
                     errorFlag=False
                     stack.pop()
@@ -83,3 +88,4 @@ def parse(inp,startSymbol,nonTerminals,terminals,parsingTable):
         print("-"*100)
         print("Result:")
         print("Valid input!")
+    return [symbolTable]
