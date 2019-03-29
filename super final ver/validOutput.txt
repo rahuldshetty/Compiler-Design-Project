@@ -1,385 +1,136 @@
 Output of Lexer
-Token		Lexeme
-------------------------------
-int		INTEGER
-main		PGM_START
-(		LEFT_PARA
-)		RIGHT_PARA
-begin		BLOCK_START
-int		INTEGER
-a		IDENTIFIER
-=		ASSIGN
-45		DIGITS
-,		SEPERATOR
-b		IDENTIFIER
-;		EOS
-if		IF
-(		LEFT_PARA
-a		IDENTIFIER
->		GT
-3		DIGITS
-)		RIGHT_PARA
-begin		BLOCK_START
-printf		DISPLAY
-(		LEFT_PARA
-"hello"		STRING
-)		RIGHT_PARA
-;		EOS
-end		BLOCK_END
-end		BLOCK_END
++---------+-------------+
+|  Token  |    Lexeme   |
++---------+-------------+
+|   int   |   INTEGER   |
+|   main  |  PGM_START  |
+|    (    |  LEFT_PARA  |
+|    )    |  RIGHT_PARA |
+|  begin  | BLOCK_START |
+|   int   |   INTEGER   |
+|    a    |  IDENTIFIER |
+|    ,    |  SEPERATOR  |
+|    b    |  IDENTIFIER |
+|    =    |    ASSIGN   |
+|    5    |    DIGITS   |
+|    +    |     ADD     |
+|    7    |    DIGITS   |
+|    ;    |     EOS     |
+|    if   |      IF     |
+|    (    |  LEFT_PARA  |
+|    a    |  IDENTIFIER |
+|    +    |     ADD     |
+|    b    |  IDENTIFIER |
+|    <=   |      LE     |
+|    3    |    DIGITS   |
+|    )    |  RIGHT_PARA |
+|  begin  | BLOCK_START |
+|  printf |   DISPLAY   |
+|    (    |  LEFT_PARA  |
+| "hello" |    STRING   |
+|    )    |  RIGHT_PARA |
+|    ;    |     EOS     |
+|   end   |  BLOCK_END  |
+|   end   |  BLOCK_END  |
++---------+-------------+
 
 
 Output of Parser
-----------------------------------------------------------------------------------------------------
-Round: 1
-Stack:  $,S
-Input: int,main,(,),begin,int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output S->DATATYPE PGM_START LEFT_PARA RIGHT_PARA BLOCK_START STMTS BLOCK_END
-----------------------------------------------------------------------------------------------------
-Round: 2
-Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,LEFT_PARA,PGM_START,DATATYPE
-Input: int,main,(,),begin,int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output DATATYPE->INTEGER
-----------------------------------------------------------------------------------------------------
-Round: 3
-Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,LEFT_PARA,PGM_START,INTEGER
-Input: int,main,(,),begin,int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match INTEGER
-----------------------------------------------------------------------------------------------------
-Round: 4
-Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,LEFT_PARA,PGM_START
-Input: main,(,),begin,int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match PGM_START
-----------------------------------------------------------------------------------------------------
-Round: 5
-Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,LEFT_PARA
-Input: (,),begin,int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match LEFT_PARA
-----------------------------------------------------------------------------------------------------
-Round: 6
-Stack:  $,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA
-Input: ),begin,int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match RIGHT_PARA
-----------------------------------------------------------------------------------------------------
-Round: 7
-Stack:  $,BLOCK_END,STMTS,BLOCK_START
-Input: begin,int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match BLOCK_START
-----------------------------------------------------------------------------------------------------
-Round: 8
-Stack:  $,BLOCK_END,STMTS
-Input: int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMTS->STMT STMTS
-----------------------------------------------------------------------------------------------------
-Round: 9
-Stack:  $,BLOCK_END,STMTS,STMT
-Input: int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMT->DECLARATION EOS
-----------------------------------------------------------------------------------------------------
-Round: 10
-Stack:  $,BLOCK_END,STMTS,EOS,DECLARATION
-Input: int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output DECLARATION->DATATYPE STMT1
-----------------------------------------------------------------------------------------------------
-Round: 11
-Stack:  $,BLOCK_END,STMTS,EOS,STMT1,DATATYPE
-Input: int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output DATATYPE->INTEGER
-----------------------------------------------------------------------------------------------------
-Round: 12
-Stack:  $,BLOCK_END,STMTS,EOS,STMT1,INTEGER
-Input: int,a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match INTEGER
-----------------------------------------------------------------------------------------------------
-Round: 13
-Stack:  $,BLOCK_END,STMTS,EOS,STMT1
-Input: a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMT1->LIST STMT2
-----------------------------------------------------------------------------------------------------
-Round: 14
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,LIST
-Input: a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output LIST->IDENTIFIER STMT3
-----------------------------------------------------------------------------------------------------
-Round: 15
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,STMT3,IDENTIFIER
-Input: a,=,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match IDENTIFIER
-----------------------------------------------------------------------------------------------------
-Round: 16
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,STMT3
-Input: =,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMT3->ASSIGN E
-----------------------------------------------------------------------------------------------------
-Round: 17
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E,ASSIGN
-Input: =,45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match ASSIGN
-----------------------------------------------------------------------------------------------------
-Round: 18
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E
-Input: 45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E->E2 E1
-----------------------------------------------------------------------------------------------------
-Round: 19
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E2
-Input: 45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E2->T E3
-----------------------------------------------------------------------------------------------------
-Round: 20
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3,T
-Input: 45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output T->F T1
-----------------------------------------------------------------------------------------------------
-Round: 21
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3,T1,F
-Input: 45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output F->DIGITS
-----------------------------------------------------------------------------------------------------
-Round: 22
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3,T1,DIGITS
-Input: 45,,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match DIGITS
-----------------------------------------------------------------------------------------------------
-Round: 23
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3,T1
-Input: ,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output T1->#
-----------------------------------------------------------------------------------------------------
-Round: 24
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1,E3
-Input: ,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E3->#
-----------------------------------------------------------------------------------------------------
-Round: 25
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,E1
-Input: ,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E1->#
-----------------------------------------------------------------------------------------------------
-Round: 26
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2
-Input: ,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMT2->SEPERATOR STMT1
-----------------------------------------------------------------------------------------------------
-Round: 27
-Stack:  $,BLOCK_END,STMTS,EOS,STMT1,SEPERATOR
-Input: ,,b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match SEPERATOR
-----------------------------------------------------------------------------------------------------
-Round: 28
-Stack:  $,BLOCK_END,STMTS,EOS,STMT1
-Input: b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMT1->LIST STMT2
-----------------------------------------------------------------------------------------------------
-Round: 29
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,LIST
-Input: b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output LIST->IDENTIFIER STMT3
-----------------------------------------------------------------------------------------------------
-Round: 30
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,STMT3,IDENTIFIER
-Input: b,;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match IDENTIFIER
-----------------------------------------------------------------------------------------------------
-Round: 31
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2,STMT3
-Input: ;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMT3->#
-----------------------------------------------------------------------------------------------------
-Round: 32
-Stack:  $,BLOCK_END,STMTS,EOS,STMT2
-Input: ;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMT2->#
-----------------------------------------------------------------------------------------------------
-Round: 33
-Stack:  $,BLOCK_END,STMTS,EOS
-Input: ;,if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match EOS
-----------------------------------------------------------------------------------------------------
-Round: 34
-Stack:  $,BLOCK_END,STMTS
-Input: if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMTS->STMT STMTS
-----------------------------------------------------------------------------------------------------
-Round: 35
-Stack:  $,BLOCK_END,STMTS,STMT
-Input: if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output STMT->CONDITION
-----------------------------------------------------------------------------------------------------
-Round: 36
-Stack:  $,BLOCK_END,STMTS,CONDITION
-Input: if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output CONDITION->IF LEFT_PARA E RIGHT_PARA BLOCK_START STMTS BLOCK_END
-----------------------------------------------------------------------------------------------------
-Round: 37
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E,LEFT_PARA,IF
-Input: if,(,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match IF
-----------------------------------------------------------------------------------------------------
-Round: 38
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E,LEFT_PARA
-Input: (,a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match LEFT_PARA
-----------------------------------------------------------------------------------------------------
-Round: 39
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E
-Input: a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E->E2 E1
-----------------------------------------------------------------------------------------------------
-Round: 40
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E2
-Input: a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E2->T E3
-----------------------------------------------------------------------------------------------------
-Round: 41
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3,T
-Input: a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output T->F T1
-----------------------------------------------------------------------------------------------------
-Round: 42
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3,T1,F
-Input: a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output F->IDENTIFIER
-----------------------------------------------------------------------------------------------------
-Round: 43
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3,T1,IDENTIFIER
-Input: a,>,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match IDENTIFIER
-----------------------------------------------------------------------------------------------------
-Round: 44
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3,T1
-Input: >,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output T1->#
-----------------------------------------------------------------------------------------------------
-Round: 45
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3
-Input: >,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E3->#
-----------------------------------------------------------------------------------------------------
-Round: 46
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1
-Input: >,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E1->relop E2 E1
-----------------------------------------------------------------------------------------------------
-Round: 47
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E2,relop
-Input: >,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output relop->GT
-----------------------------------------------------------------------------------------------------
-Round: 48
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E2,GT
-Input: >,3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match GT
-----------------------------------------------------------------------------------------------------
-Round: 49
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E2
-Input: 3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output E2->T E3
-----------------------------------------------------------------------------------------------------
-Round: 50
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3,T
-Input: 3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output T->F T1
-----------------------------------------------------------------------------------------------------
-Round: 51
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3,T1,F
-Input: 3,),begin,printf,(,"hello",),;,end,end,$
-Action: Output F->DIGITS
-----------------------------------------------------------------------------------------------------
-Round: 52
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3,T1,DIGITS
-Input: 3,),begin,printf,(,"hello",),;,end,end,$
-Action: Match DIGITS
-----------------------------------------------------------------------------------------------------
-Round: 53
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3,T1
-Input: ),begin,printf,(,"hello",),;,end,end,$
-Action: Output T1->#
-----------------------------------------------------------------------------------------------------
-Round: 54
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1,E3
-Input: ),begin,printf,(,"hello",),;,end,end,$
-Action: Output E3->#
-----------------------------------------------------------------------------------------------------
-Round: 55
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA,E1
-Input: ),begin,printf,(,"hello",),;,end,end,$
-Action: Output E1->#
-----------------------------------------------------------------------------------------------------
-Round: 56
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START,RIGHT_PARA
-Input: ),begin,printf,(,"hello",),;,end,end,$
-Action: Match RIGHT_PARA
-----------------------------------------------------------------------------------------------------
-Round: 57
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,BLOCK_START
-Input: begin,printf,(,"hello",),;,end,end,$
-Action: Match BLOCK_START
-----------------------------------------------------------------------------------------------------
-Round: 58
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS
-Input: printf,(,"hello",),;,end,end,$
-Action: Output STMTS->STMT STMTS
-----------------------------------------------------------------------------------------------------
-Round: 59
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,STMT
-Input: printf,(,"hello",),;,end,end,$
-Action: Output STMT->FUNCTION EOS
-----------------------------------------------------------------------------------------------------
-Round: 60
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,EOS,FUNCTION
-Input: printf,(,"hello",),;,end,end,$
-Action: Output FUNCTION->DISPLAY LEFT_PARA MSG RIGHT_PARA
-----------------------------------------------------------------------------------------------------
-Round: 61
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,EOS,RIGHT_PARA,MSG,LEFT_PARA,DISPLAY
-Input: printf,(,"hello",),;,end,end,$
-Action: Match DISPLAY
-----------------------------------------------------------------------------------------------------
-Round: 62
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,EOS,RIGHT_PARA,MSG,LEFT_PARA
-Input: (,"hello",),;,end,end,$
-Action: Match LEFT_PARA
-----------------------------------------------------------------------------------------------------
-Round: 63
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,EOS,RIGHT_PARA,MSG
-Input: "hello",),;,end,end,$
-Action: Output MSG->STRING
-----------------------------------------------------------------------------------------------------
-Round: 64
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,EOS,RIGHT_PARA,STRING
-Input: "hello",),;,end,end,$
-Action: Match STRING
-----------------------------------------------------------------------------------------------------
-Round: 65
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,EOS,RIGHT_PARA
-Input: ),;,end,end,$
-Action: Match RIGHT_PARA
-----------------------------------------------------------------------------------------------------
-Round: 66
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS,EOS
-Input: ;,end,end,$
-Action: Match EOS
-----------------------------------------------------------------------------------------------------
-Round: 67
-Stack:  $,BLOCK_END,STMTS,BLOCK_END,STMTS
-Input: end,end,$
-Action: Output STMTS->#
-----------------------------------------------------------------------------------------------------
-Round: 68
-Stack:  $,BLOCK_END,STMTS,BLOCK_END
-Input: end,end,$
-Action: Match BLOCK_END
-----------------------------------------------------------------------------------------------------
-Round: 69
-Stack:  $,BLOCK_END,STMTS
-Input: end,$
-Action: Output STMTS->#
-----------------------------------------------------------------------------------------------------
-Round: 70
-Stack:  $,BLOCK_END
-Input: end,$
-Action: Match BLOCK_END
-----------------------------------------------------------------------------------------------------
++-------------+----------------------+-------------------------------------------------------------------------------+
+|  Stack top  | Current input symbol |                                     Action                                    |
++-------------+----------------------+-------------------------------------------------------------------------------+
+|      S      |       INTEGER        | Output S->DATATYPE PGM_START LEFT_PARA RIGHT_PARA BLOCK_START STMTS BLOCK_END |
+|   DATATYPE  |       INTEGER        |                            Output DATATYPE->INTEGER                           |
+|   INTEGER   |       INTEGER        |                                 Match INTEGER                                 |
+|  PGM_START  |      PGM_START       |                                Match PGM_START                                |
+|  LEFT_PARA  |      LEFT_PARA       |                                Match LEFT_PARA                                |
+|  RIGHT_PARA |      RIGHT_PARA      |                                Match RIGHT_PARA                               |
+| BLOCK_START |     BLOCK_START      |                               Match BLOCK_START                               |
+|    STMTS    |       INTEGER        |                            Output STMTS->STMT STMTS                           |
+|     STMT    |       INTEGER        |                          Output STMT->DECLARATION EOS                         |
+| DECLARATION |       INTEGER        |                       Output DECLARATION->DATATYPE STMT1                      |
+|   DATATYPE  |       INTEGER        |                            Output DATATYPE->INTEGER                           |
+|   INTEGER   |       INTEGER        |                                 Match INTEGER                                 |
+|    STMT1    |      IDENTIFIER      |                            Output STMT1->LIST STMT2                           |
+|     LIST    |      IDENTIFIER      |                         Output LIST->IDENTIFIER STMT3                         |
+|  IDENTIFIER |      IDENTIFIER      |                                Match IDENTIFIER                               |
+|    STMT3    |      SEPERATOR       |                                Output STMT3->#                                |
+|    STMT2    |      SEPERATOR       |                         Output STMT2->SEPERATOR STMT1                         |
+|  SEPERATOR  |      SEPERATOR       |                                Match SEPERATOR                                |
+|    STMT1    |      IDENTIFIER      |                            Output STMT1->LIST STMT2                           |
+|     LIST    |      IDENTIFIER      |                         Output LIST->IDENTIFIER STMT3                         |
+|  IDENTIFIER |      IDENTIFIER      |                                Match IDENTIFIER                               |
+|    STMT3    |        ASSIGN        |                             Output STMT3->ASSIGN E                            |
+|    ASSIGN   |        ASSIGN        |                                  Match ASSIGN                                 |
+|      E      |        DIGITS        |                                Output E->E2 E1                                |
+|      E2     |        DIGITS        |                                Output E2->T E3                                |
+|      T      |        DIGITS        |                                 Output T->F T1                                |
+|      F      |        DIGITS        |                                Output F->DIGITS                               |
+|    DIGITS   |        DIGITS        |                                  Match DIGITS                                 |
+|      T1     |         ADD          |                                  Output T1->#                                 |
+|      E3     |         ADD          |                              Output E3->OP1 T E3                              |
+|     OP1     |         ADD          |                                Output OP1->ADD                                |
+|     ADD     |         ADD          |                                   Match ADD                                   |
+|      T      |        DIGITS        |                                 Output T->F T1                                |
+|      F      |        DIGITS        |                                Output F->DIGITS                               |
+|    DIGITS   |        DIGITS        |                                  Match DIGITS                                 |
+|      T1     |         EOS          |                                  Output T1->#                                 |
+|      E3     |         EOS          |                                  Output E3->#                                 |
+|      E1     |         EOS          |                                  Output E1->#                                 |
+|    STMT2    |         EOS          |                                Output STMT2->#                                |
+|     EOS     |         EOS          |                                   Match EOS                                   |
+|    STMTS    |          IF          |                            Output STMTS->STMT STMTS                           |
+|     STMT    |          IF          |                             Output STMT->CONDITION                            |
+|  CONDITION  |          IF          |    Output CONDITION->IF LEFT_PARA E RIGHT_PARA BLOCK_START STMTS BLOCK_END    |
+|      IF     |          IF          |                                    Match IF                                   |
+|  LEFT_PARA  |      LEFT_PARA       |                                Match LEFT_PARA                                |
+|      E      |      IDENTIFIER      |                                Output E->E2 E1                                |
+|      E2     |      IDENTIFIER      |                                Output E2->T E3                                |
+|      T      |      IDENTIFIER      |                                 Output T->F T1                                |
+|      F      |      IDENTIFIER      |                              Output F->IDENTIFIER                             |
+|  IDENTIFIER |      IDENTIFIER      |                                Match IDENTIFIER                               |
+|      T1     |         ADD          |                                  Output T1->#                                 |
+|      E3     |         ADD          |                              Output E3->OP1 T E3                              |
+|     OP1     |         ADD          |                                Output OP1->ADD                                |
+|     ADD     |         ADD          |                                   Match ADD                                   |
+|      T      |      IDENTIFIER      |                                 Output T->F T1                                |
+|      F      |      IDENTIFIER      |                              Output F->IDENTIFIER                             |
+|  IDENTIFIER |      IDENTIFIER      |                                Match IDENTIFIER                               |
+|      T1     |          LE          |                                  Output T1->#                                 |
+|      E3     |          LE          |                                  Output E3->#                                 |
+|      E1     |          LE          |                             Output E1->relop E2 E1                            |
+|    relop    |          LE          |                                Output relop->LE                               |
+|      LE     |          LE          |                                    Match LE                                   |
+|      E2     |        DIGITS        |                                Output E2->T E3                                |
+|      T      |        DIGITS        |                                 Output T->F T1                                |
+|      F      |        DIGITS        |                                Output F->DIGITS                               |
+|    DIGITS   |        DIGITS        |                                  Match DIGITS                                 |
+|      T1     |      RIGHT_PARA      |                                  Output T1->#                                 |
+|      E3     |      RIGHT_PARA      |                                  Output E3->#                                 |
+|      E1     |      RIGHT_PARA      |                                  Output E1->#                                 |
+|  RIGHT_PARA |      RIGHT_PARA      |                                Match RIGHT_PARA                               |
+| BLOCK_START |     BLOCK_START      |                               Match BLOCK_START                               |
+|    STMTS    |       DISPLAY        |                            Output STMTS->STMT STMTS                           |
+|     STMT    |       DISPLAY        |                           Output STMT->FUNCTION EOS                           |
+|   FUNCTION  |       DISPLAY        |               Output FUNCTION->DISPLAY LEFT_PARA MSG RIGHT_PARA               |
+|   DISPLAY   |       DISPLAY        |                                 Match DISPLAY                                 |
+|  LEFT_PARA  |      LEFT_PARA       |                                Match LEFT_PARA                                |
+|     MSG     |        STRING        |                               Output MSG->STRING                              |
+|    STRING   |        STRING        |                                  Match STRING                                 |
+|  RIGHT_PARA |      RIGHT_PARA      |                                Match RIGHT_PARA                               |
+|     EOS     |         EOS          |                                   Match EOS                                   |
+|    STMTS    |      BLOCK_END       |                                Output STMTS->#                                |
+|  BLOCK_END  |      BLOCK_END       |                                Match BLOCK_END                                |
+|    STMTS    |      BLOCK_END       |                                Output STMTS->#                                |
+|  BLOCK_END  |      BLOCK_END       |                                Match BLOCK_END                                |
++-------------+----------------------+-------------------------------------------------------------------------------+
 Result:
 Valid input!
+
+Symbol Table
++-------+-------------+-----------------+
+| Token | Description | Size (in bytes) |
++-------+-------------+-----------------+
+|   a   |  IDENTIFIER |        2        |
+|   b   |  IDENTIFIER |        2        |
++-------+-------------+-----------------+

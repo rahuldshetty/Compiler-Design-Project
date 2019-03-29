@@ -1,6 +1,4 @@
 int main()
 begin
-    char a;
-    a = 'g';
-    int a;
+    int a, ;
 end
